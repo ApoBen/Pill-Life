@@ -464,6 +464,7 @@ class AppController {
           hlSlider.value = 120;
         }
       });
+    }
     // --- KANA KARIŞMA SÜRESİ SLIDER & INPUT İLİŞKİSİ ---
     const absInput = document.getElementById("edit-substance-absorption");
     const absSlider = document.getElementById("edit-substance-absorption-slider");
