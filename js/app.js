@@ -101,6 +101,7 @@ class AppController {
       const percentage = Pharmacokinetics.calculateCumulativePercentage(
         subDoses,
         sub.halfLifeHours,
+        sub.absorptionTimeHours || 0,
         sub.doseMg,
         now
       );
@@ -108,6 +109,7 @@ class AppController {
       const amountMg = Pharmacokinetics.calculateCumulativeAmount(
         subDoses,
         sub.halfLifeHours,
+        sub.absorptionTimeHours || 0,
         now
       );
 
@@ -276,6 +278,11 @@ class AppController {
     // Slider min/max sınırlarını ayarla ve değeri eşitle
     this.updateHalfLifeSliderLimits(hlUnit);
     document.getElementById("edit-substance-halflife-slider").value = hlVal;
+
+    // Kana karışma süresi
+    const absorption = substance.absorptionTimeHours || 0;
+    document.getElementById("edit-substance-absorption").value = absorption;
+    document.getElementById("edit-substance-absorption-slider").value = absorption;
 
     // Kendi ilacı ise "Sil" butonunu göster, default ilaçlarda gizle
     const deleteBtn = document.getElementById("btn-delete-custom-substance");
@@ -457,6 +464,16 @@ class AppController {
           hlSlider.value = 120;
         }
       });
+    // --- KANA KARIŞMA SÜRESİ SLIDER & INPUT İLİŞKİSİ ---
+    const absInput = document.getElementById("edit-substance-absorption");
+    const absSlider = document.getElementById("edit-substance-absorption-slider");
+    if (absInput && absSlider) {
+      absInput.addEventListener("input", (e) => {
+        absSlider.value = e.target.value;
+      });
+      absSlider.addEventListener("input", (e) => {
+        absInput.value = e.target.value;
+      });
     }
 
     // --- ÖZEL İLAÇ EKLEME FORMU PRESET YÖNETİMİ ---
@@ -511,10 +528,13 @@ class AppController {
         color = document.getElementById("edit-substance-color-custom").value;
       }
 
+      const absorptionTimeHours = parseFloat(document.getElementById("edit-substance-absorption").value) || 0;
+
       StorageManager.saveOverride(subId, {
         name,
         doseMg: defaultDose,
         halfLifeHours,
+        absorptionTimeHours,
         color,
         notes
       });
@@ -549,11 +569,14 @@ class AppController {
         color = document.getElementById("add-custom-color-custom").value;
       }
 
+      const absorptionTimeHours = parseFloat(document.getElementById("add-custom-absorption").value) || 0;
+
       const newSub = StorageManager.addCustomSubstance({
         name,
         category,
         doseMg: defaultDose,
         halfLifeHours,
+        absorptionTimeHours,
         color,
         notes,
         activeIngredient: "Özel Madde"

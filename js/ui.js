@@ -170,7 +170,7 @@ class UIManager {
         </div>
 
         <div class="card-bottom-info">
-          <span class="halflife-indicator">⏱️ t½: ${substance.halfLifeHours}s</span>
+          <span class="halflife-indicator">⏱️ t½: ${substance.halfLifeHours}s | 📥 Tmax: ${substance.absorptionTimeHours || 0}s</span>
           <span>Son Doz: ${timeText}</span>
         </div>
 
@@ -256,7 +256,7 @@ class UIManager {
         </div>
 
         <div class="library-card-actions">
-          <span class="halflife-badge">t½: ${sub.halfLifeHours} Saat</span>
+          <span class="halflife-badge" style="font-size: 11px;">t½: ${sub.halfLifeHours}s | Tmax: ${sub.absorptionTimeHours || 0}s</span>
           <button class="btn-card-dose btn-dose-add" data-id="${sub.id}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
               <line x1="12" y1="5" x2="12" y2="19" />

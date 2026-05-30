@@ -236,6 +236,7 @@ class AnalyticsChart {
       const series = Pharmacokinetics.generateTimeSeries(
         subDoses,
         sub.halfLifeHours,
+        sub.absorptionTimeHours || 0,
         sub.doseMg,
         startTime,
         endTime,
