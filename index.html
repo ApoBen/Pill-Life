@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pill Life — Kan Seviyesi & Yarı Ömür Takip Uygulaması</title>
+  
+  <!-- Modern Typography (Inter & JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+          <path d="M7 12H17" />
+          <path d="M12 7V17" />
+        </svg>
+        <span class="logo-text">Pill <span class="accent-text">Life</span></span>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="menu-item active" id="nav-dashboard">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+          <span>Panel</span>
+        </a>
+        <a href="#library" class="menu-item" id="nav-library">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 6.00012C12.0001 5.00012 13 3.00012 16.5 3.00012C20 3.00012 21 5.50012 21 8.50012C21 11.5001 19.5 13.0001 18 14.5001C16.5 16.0001 12 21.0001 12 21.0001C12 21.0001 7.5 16.0001 6 14.5001C4.5 13.0001 3 11.5001 3 8.50012C3 5.50012 4 3.00012 7.5 3.00012C11 3.00012 11.9999 5.00012 12 6.00012Z" />
+          </svg>
+          <span>Kütüphane</span>
+        </a>
+        <a href="#analytics" class="menu-item" id="nav-analytics">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3V21H21" />
+            <path d="M18 17L13 9L9 13L5 7" />
+          </svg>
+          <span>Grafik & Analiz</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="btn-dose-history" class="btn btn-secondary btn-full">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 8V12L15 15" />
+            <circle cx="12" cy="12" r="9" />
+          </svg>
+          Doz Geçmişi
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Bar / Header -->
+      <header class="top-bar">
+        <div class="header-info">
+          <h1 id="page-title">Genel Durum Paneli</h1>
+          <p id="page-subtitle" class="text-secondary">Vücudunuzdaki aktif maddelerin anlık analizi</p>
+        </div>
+        <div class="header-actions">
+          <div class="clock-widget">
+            <span id="live-time" class="time-display">00:00:00</span>
+            <span id="live-date" class="date-display">1 Ocak Salı</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW: Dashboard -->
+      <section id="view-dashboard" class="content-view active">
+        <!-- Quick Stats Banner -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-cyan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-active-count">0</span>
+              <span class="stat-label">Aktif Madde</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-emerald">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-highest-level">0%</span>
+              <span class="stat-label">En Yüksek Seviye</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+            </div>
+            <div class="stat-details">
+              <span class="stat-value" id="stat-last-dose-time">--:--</span>
+              <span class="stat-label">Son Doz Zamanı</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Section Title -->
+        <div class="section-header">
+          <h2>Aktif Kan Seviyeleri</h2>
+          <span class="live-indicator">
+            <span class="pulse-dot"></span>
+            Anlık Takip Ediliyor
+          </span>
+        </div>
+
+        <!-- Active Cards Container -->
+        <div id="active-substances-grid" class="cards-grid">
+          <!-- Will be filled dynamically by JavaScript -->
+          <div class="no-data-placeholder">
+            <div class="placeholder-icon">💊</div>
+            <h3>Şu an aktif bir doz bulunmuyor</h3>
+            <p>Kandaki seviyeleri izlemek için kütüphaneden bir ilaç seçip doz ekleyin.</p>
+            <button class="btn btn-primary" onclick="app.navigateTo('library')">İlaç Kütüphanesine Git</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: Substance Library -->
+      <section id="view-library" class="content-view">
+        <!-- Search & Custom Add Bar -->
+        <div class="filter-bar">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" id="library-search" placeholder="İlaç veya etken madde ara...">
+          </div>
+          
+          <div class="category-tabs">
+            <button class="tab-btn active" data-category="all">Tümü</button>
+            <button class="tab-btn" data-category="medicine">💊 İlaçlar</button>
+            <button class="tab-btn" data-category="vitamin">🧬 Vitaminler</button>
+            <button class="tab-btn" data-category="mineral">🪨 Mineraller</button>
+          </div>
+
+          <button id="btn-add-custom-drug" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Yeni İlaç Ekle
+          </button>
+        </div>
+
+        <!-- Library Grid -->
+        <div id="library-grid" class="cards-grid">
+          <!-- Will be filled dynamically -->
+        </div>
+      </section>
+
+      <!-- VIEW: Analytics / Chart -->
+      <section id="view-analytics" class="content-view">
+        <div class="analytics-layout">
+          <!-- Chart Control & Chart Area -->
+          <div class="chart-main-container glass-card">
+            <div class="chart-header">
+              <div class="chart-info">
+                <h3>Kan Seviyesi Eğrileri</h3>
+                <p class="text-secondary">Zamana bağlı birikimli kan konsantrasyonu tahmini (%)</p>
+              </div>
+              <div class="time-range-selector">
+                <button class="btn btn-sm btn-outline active" data-hours="6">6 Saat</button>
+                <button class="btn btn-sm btn-outline" data-hours="12">12 Saat</button>
+                <button class="btn btn-sm btn-outline" data-hours="24">24 Saat</button>
+                <button class="btn btn-sm btn-outline" data-hours="48">48 Saat</button>
+                <button class="btn btn-sm btn-outline" data-hours="168">7 Gün</button>
+              </div>
+            </div>
+            
+            <div class="chart-wrapper">
+              <canvas id="main-analytics-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart Filters sidebar -->
+          <div class="chart-sidebar glass-card">
+            <h4>Grafik Filtreleri</h4>
+            <p class="text-secondary text-sm mb-4">Grafikte görüntülemek istediğiniz aktif ilaçları seçin.</p>
+            <div id="chart-substance-filters" class="checkbox-list">
+              <!-- Will be filled dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Action Button for Quick Dose -->
+    <button id="fab-add-dose" class="fab-btn" title="Doz Al">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    </button>
+
+  </div> <!-- /App Wrapper -->
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- MODAL 1: DOZ EKLEME -->
+  <div id="modal-add-dose" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3>Doz Kaydet</h3>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <form id="form-add-dose">
+        <input type="hidden" id="add-dose-substance-id">
+        
+        <div class="form-group">
+          <label for="add-dose-name-display">İlaç Adı</label>
+          <input type="text" id="add-dose-name-display" disabled class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label for="add-dose-mg">Doz Miktarı (mg)</label>
+          <div class="input-with-unit">
+            <input type="number" id="add-dose-mg" required min="0.01" step="any" class="form-input">
+            <span class="unit">mg</span>
+          </div>
+          <span class="input-hint" id="add-dose-default-hint"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="add-dose-time">Alınma Zamanı</label>
+          <input type="datetime-local" id="add-dose-time" required class="form-input">
+          <div class="quick-time-buttons">
+            <button type="button" class="btn btn-xs btn-secondary" id="btn-time-now">Şimdi</button>
+            <button type="button" class="btn btn-xs btn-secondary" id="btn-time-1h-ago">1 Saat Önce</button>
+            <button type="button" class="btn btn-xs btn-secondary" id="btn-time-4h-ago">4 Saat Önce</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-close-modal">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Doza Ekle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: İLAÇ DÜZENLEME / AYARLARI -->
+  <div id="modal-edit-substance" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3>İlaç Ayarlarını Düzenle</h3>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <form id="form-edit-substance">
+        <input type="hidden" id="edit-substance-id">
+        
+        <div class="form-group">
+          <label for="edit-substance-name">İlaç Adı</label>
+          <input type="text" id="edit-substance-name" required class="form-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-substance-halflife">Yarı Ömür</label>
+            <div class="input-with-unit">
+              <input type="number" id="edit-substance-halflife" required min="0.1" step="any" class="form-input">
+              <select id="edit-substance-halflife-unit" class="form-select">
+                <option value="hours">Saat</option>
+                <option value="days">Gün</option>
+              </select>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="edit-substance-halflife-slider" min="1" max="120" step="1" class="form-slider">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-substance-default-dose">Varsayılan Tek Doz (mg)</label>
+          <div class="input-with-unit">
+            <input type="number" id="edit-substance-default-dose" required min="0.01" step="any" class="form-input">
+            <span class="unit">mg</span>
+          </div>
+        </div>
+
+        <!-- Renk Seçici -->
+        <div class="form-group">
+          <label>Tema Rengi</label>
+          <div class="color-picker-wrapper">
+            <div class="preset-colors-grid" id="edit-presets-grid">
+              <!-- Will be filled with preset circles -->
+            </div>
+            <div class="custom-color-input mt-2">
+              <label for="edit-substance-color-custom" class="text-sm">Özel Renk:</label>
+              <input type="color" id="edit-substance-color-custom" class="color-picker-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-substance-notes">Kullanım Notları / Açıklama</label>
+          <textarea id="edit-substance-notes" rows="3" class="form-textarea" placeholder="İlaçla ilgili hatırlatıcı notlar..."></textarea>
+        </div>
+
+        <div class="modal-footer justify-between">
+          <div>
+            <button type="button" id="btn-delete-custom-substance" class="btn btn-danger hidden">İlacı Kütüphaneden Sil</button>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-secondary btn-close-modal">İptal</button>
+            <button type="submit" class="btn btn-primary">Ayarları Kaydet</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: YENİ (ÖZEL) İLAÇ EKLEME -->
+  <div id="modal-add-custom" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3>Kütüphaneye Yeni İlaç Ekle</h3>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <form id="form-add-custom">
+        <div class="form-group">
+          <label for="add-custom-name">İlaç / Madde Adı</label>
+          <input type="text" id="add-custom-name" required placeholder="Ör: Aspirin, Omega 3, D Vitamini" class="form-input">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="add-custom-category">Kategori</label>
+            <select id="add-custom-category" class="form-select">
+              <option value="medicine">💊 İlaç</option>
+              <option value="vitamin">🧬 Vitamin</option>
+              <option value="mineral">🪨 Mineral</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="add-custom-dose">Varsayılan Doz (mg)</label>
+            <div class="input-with-unit">
+              <input type="number" id="add-custom-dose" required min="0.01" step="any" value="100" class="form-input">
+              <span class="unit">mg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="add-custom-halflife">Yarı Ömür</label>
+          <div class="input-with-unit">
+            <input type="number" id="add-custom-halflife" required min="0.1" step="any" value="6" class="form-input">
+            <select id="add-custom-halflife-unit" class="form-select">
+              <option value="hours">Saat</option>
+              <option value="days">Gün</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Renk Seçici -->
+        <div class="form-group">
+          <label>Renk</label>
+          <div class="color-picker-wrapper">
+            <div class="preset-colors-grid" id="add-presets-grid">
+              <!-- Preset circles -->
+            </div>
+            <div class="custom-color-input mt-2">
+              <label for="add-custom-color-custom" class="text-sm">Özel Renk:</label>
+              <input type="color" id="add-custom-color-custom" value="#3b82f6" class="color-picker-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="add-custom-notes">Notlar</label>
+          <textarea id="add-custom-notes" rows="2" class="form-textarea" placeholder="Tok karnına alınır, vb..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-close-modal">Kapat</button>
+          <button type="submit" class="btn btn-primary">Kütüphaneye Ekle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: DOZ GEÇMİŞİ LİSTESİ -->
+  <div id="modal-dose-history" class="modal-overlay">
+    <div class="modal-content glass-card modal-large">
+      <div class="modal-header">
+        <h3>Doz Geçmişi</h3>
+        <button class="btn-close-modal">&times;</button>
+      </div>
+      <div class="history-table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>İlaç</th>
+              <th>Alınan Doz</th>
+              <th>Tarih & Saat</th>
+              <th>Durum</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+            <!-- Will be filled dynamically -->
+          </tbody>
+        </table>
+        <div id="history-no-data" class="no-data-placeholder hidden">
+          <p>Kayıtlı doz geçmişi bulunmamaktadır.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-close-modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/substances.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/pharmacokinetics.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
