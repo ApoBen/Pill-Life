@@ -1,0 +1,17 @@
+{
+  "name": "Pill-Life",
+  "short_name": "Pill-Life",
+  "description": "Farmakokinetik Takip Uygulaması",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#06060f",
+  "theme_color": "#06060f",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

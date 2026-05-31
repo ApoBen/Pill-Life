@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pill Life</string>
+    <string name="widget_name">Pill-Life Seviyeleri</string>
+    <string name="widget_description">İlaçların güncel kan seviyelerini ana ekrandan takip edin.</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_item_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:gravity="center_vertical"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/widget_drug_color"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/widget_dot"
+        android:contentDescription="Renk" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp">
+        <TextView
+            android:id="@+id/widget_drug_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="İlaç A"
+            android:textColor="#E2E8F0"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/widget_drug_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0 mg"
+            android:textColor="#10B981"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/widget_btn_add_dose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@android:drawable/ic_input_add"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Doz Ekle"
+        android:tint="#8B5CF6" />
+
+</LinearLayout>
